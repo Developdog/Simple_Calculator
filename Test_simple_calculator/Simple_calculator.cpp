@@ -7,13 +7,12 @@
 
 
 /* -------------------------------------------------------- */
-// ¿ŞÂÊ °ıÈ£¿Í ¿À¸¥ÂÊ °ıÈ£°¡ ¸ÅÄªµÇ´ÂÁö °Ë»çÇÑ´Ù.
-// ¸ÅÄªÀÌ ¸Â°Ô µÇ¸é, true¸¦ ¸®ÅÏÇÑ´Ù. ±×·¸Áö ¾ÊÀ¸¸é, false¸¦ ¸®ÅÏÇÑ´Ù.
-// ¿¹: (()) , ()()	/* ¸ÅÄª O */
-//     ((() , )(	    /* ¸ÅÄª X */
-// 3Àå 57¹ø ½½¶óÀÌµå Âü°íÇÏ¼¼¿ä.
+// ì™¼ìª½ ê´„í˜¸ì™€ ì˜¤ë¥¸ìª½ ê´„í˜¸ê°€ ë§¤ì¹­ë˜ëŠ”ì§€ ê²€ì‚¬í•œë‹¤.
+// ë§¤ì¹­ì´ ë§ê²Œ ë˜ë©´, trueë¥¼ ë¦¬í„´í•œë‹¤. ê·¸ë ‡ì§€ ì•Šìœ¼ë©´, falseë¥¼ ë¦¬í„´í•œë‹¤.
+// ì˜ˆ: (()) , ()()	/* ë§¤ì¹­ O */
+//     ((() , )(	    /* ë§¤ì¹­ X */
 
-// ¹®Á¦ 1
+// ë¬¸ì œ 1
 bool Simple_calculator::check_balance_symbols()
 {
 	List<string>::const_iterator pos;
@@ -22,57 +21,57 @@ bool Simple_calculator::check_balance_symbols()
 	for (List<string>::const_iterator pos = m_infix_expr.begin(); pos != m_infix_expr.end(); pos++)
 	{
 		if (*pos == "(") {
-			stack.push_back("("); //(¸¦ ¸¸³¯¶§¸¶´Ù ½ºÅÃ¿¡ ÀúÀåÇÏ±â
+			stack.push_back("("); //(ë¥¼ ë§Œë‚ ë•Œë§ˆë‹¤ ìŠ¤íƒì— ì €ì¥í•˜ê¸°
 		}
-		if (*pos == ")" && *stack.begin() != "(") { // (°¡ ¾øÀ½¿¡µµ )¸¦ ¸¸³¯ °æ¿ì 
+		if (*pos == ")" && *stack.begin() != "(") { // (ê°€ ì—†ìŒì—ë„ )ë¥¼ ë§Œë‚  ê²½ìš° 
 			return false;
 		}
 		if (*pos == ")") {
-			stack.pop_back();// )¸¦ ¸¸³¯¶§¸¶´Ù ½ºÅÃ¿¡¼­ ²¨³»±â
+			stack.pop_back();// )ë¥¼ ë§Œë‚ ë•Œë§ˆë‹¤ ìŠ¤íƒì—ì„œ êº¼ë‚´ê¸°
 		}
 
 	}
 
-	if (*stack.begin() == "(") { // (°¡ ½ºÅÃ¿¡ ³²¾ÒÀ» °æ¿ì
+	if (*stack.begin() == "(") { // (ê°€ ìŠ¤íƒì— ë‚¨ì•˜ì„ ê²½ìš°
 		return false;
 	}
 
 	return true;
 }
 
-// ¹®Á¦ 2
+// ë¬¸ì œ 2
 void Simple_calculator::change_infix_to_postfix()
 {
-	/* º¯È¯ °á°ú´Â m_postfix_expr¿¡ ÀúÀåÇÏ¼¼¿ä. */
+	/* ë³€í™˜ ê²°ê³¼ëŠ” m_postfix_exprì— ì €ì¥í•˜ì„¸ìš”. */
 	List<string> stack;
-	List<string> post_dummy; //¿øº» °ª ´ë½Å¿¡ ÇÏ³ª ´õ ¸¸µé±â
-	List<string> post_dummytrans; // for¹® °è»ê½Ä Áß stackÀ» ´ë½ÅÇÒ °ª
+	List<string> post_dummy; //ì›ë³¸ ê°’ ëŒ€ì‹ ì— í•˜ë‚˜ ë” ë§Œë“¤ê¸°
+	List<string> post_dummytrans; // forë¬¸ ê³„ì‚°ì‹ ì¤‘ stackì„ ëŒ€ì‹ í•  ê°’
 
 
 	for (List<string>::const_iterator pos = m_infix_expr.begin(); pos != m_infix_expr.end(); pos++)
 	{
-		if (*pos == "+" || *pos == "-") { // + È¤Àº -À» ³ÖÀ»¶§
-			if (stack.back() != "(" && stack.back() != "") { // ½ºÅÃÀÇ ¸Ç À§¿¡ °ªÀÌ (³ª NULLÀÌ ¾Æ´Ï¸é °è¼Ó Ãâ·ÂÇÑ´Ù.
-				post_dummytrans = stack; // stackÀ» for¹®¿¡ ±×´ë·Î ³ÖÀ¸¸é for¹® ½ÇÇà Áß stack.end()ÀÇ °ªÀÌ ¹Ù²ã °è»êÀÌ ¾î·Á¿öÁø´Ù. µû¶ó¼­ ÀÓÀÇÀÇ stackÀ» ´ë½ÅÇÒ °ªÀ» ¸¸µç´Ù.
+		if (*pos == "+" || *pos == "-") { // + í˜¹ì€ -ì„ ë„£ì„ë•Œ
+			if (stack.back() != "(" && stack.back() != "") { // ìŠ¤íƒì˜ ë§¨ ìœ„ì— ê°’ì´ (ë‚˜ NULLì´ ì•„ë‹ˆë©´ ê³„ì† ì¶œë ¥í•œë‹¤.
+				post_dummytrans = stack; // stackì„ forë¬¸ì— ê·¸ëŒ€ë¡œ ë„£ìœ¼ë©´ forë¬¸ ì‹¤í–‰ ì¤‘ stack.end()ì˜ ê°’ì´ ë°”ê¿” ê³„ì‚°ì´ ì–´ë ¤ì›Œì§„ë‹¤. ë”°ë¼ì„œ ì„ì˜ì˜ stackì„ ëŒ€ì‹ í•  ê°’ì„ ë§Œë“ ë‹¤.
 				for (List<string>::const_iterator alpha = post_dummytrans.end(); alpha != post_dummytrans.begin(); alpha--)
 				{
-					if (stack.back() == "(" || stack.back() == "" ) break; // ½ºÅÃ ³»¿¡¼­ (³ª NULLÀ» ¸¸³ª¸é Å»Ãâ
+					if (stack.back() == "(" || stack.back() == "" ) break; // ìŠ¤íƒ ë‚´ì—ì„œ (ë‚˜ NULLì„ ë§Œë‚˜ë©´ íƒˆì¶œ
 					else {
 						post_dummy.push_back(stack.back());
 						stack.pop_back();
 					}
 				}
 			}
-			stack.push_back(*pos); // ½ºÅÃÀÇ °¡Àå À­ºÎºĞÀÌ ^ * / °¡ ¾Æ´Ï¸é ±×³É ³Ñ¾î°£´Ù.
+			stack.push_back(*pos); // ìŠ¤íƒì˜ ê°€ì¥ ìœ—ë¶€ë¶„ì´ ^ * / ê°€ ì•„ë‹ˆë©´ ê·¸ëƒ¥ ë„˜ì–´ê°„ë‹¤.
 		}
-		// + -´Â ÀÚ½Å°ú µ¿ÀÏÇÑ + - ¿¬»êÀÚ¸¦ ¸¸³ª¸éÀ» ¸¸³ª¸é, ÀÌÀü °ªÀÇ + - stackÀ» »©°í, º»ÀÎÀÇ °ªÀ» stack¿¡ ³Ö´Â´Ù. ¸¸¾à * /À» ¸¸³µÀ» °æ¿ì¿¡´Â (³ª NULLÀ» ¸¸³ª±â Àü±îÁö stackÀÇ °ªÀ» Ãâ·ÂÇÑ´Ù.
+		// + -ëŠ” ìì‹ ê³¼ ë™ì¼í•œ + - ì—°ì‚°ìë¥¼ ë§Œë‚˜ë©´ì„ ë§Œë‚˜ë©´, ì´ì „ ê°’ì˜ + - stackì„ ë¹¼ê³ , ë³¸ì¸ì˜ ê°’ì„ stackì— ë„£ëŠ”ë‹¤. ë§Œì•½ * /ì„ ë§Œë‚¬ì„ ê²½ìš°ì—ëŠ” (ë‚˜ NULLì„ ë§Œë‚˜ê¸° ì „ê¹Œì§€ stackì˜ ê°’ì„ ì¶œë ¥í•œë‹¤.
 
-		else if (*pos == "*" || *pos == "/") { // * È¤Àº / ³ÖÀ»¶§
-			if ( stack.back() == "*" || stack.back() == "/" ) { // ½ºÅÃÀÇ ¸Ç À§¿¡ *³ª /°¡ ÀÖÀ¸¸é ÇØ´ç °ªÀ» Ãâ·ÂÇÑ´Ù.
+		else if (*pos == "*" || *pos == "/") { // * í˜¹ì€ / ë„£ì„ë•Œ
+			if ( stack.back() == "*" || stack.back() == "/" ) { // ìŠ¤íƒì˜ ë§¨ ìœ„ì— *ë‚˜ /ê°€ ìˆìœ¼ë©´ í•´ë‹¹ ê°’ì„ ì¶œë ¥í•œë‹¤.
 				post_dummytrans = stack;
 				for (List<string>::const_iterator alpha = post_dummytrans.end(); alpha != post_dummytrans.begin(); alpha--)
 				{
-					if (stack.back() == "*" || stack.back() == "/") // *³ª /¸¦ Á¦¿ÜÇÑ °ªÀ» ¸¸³¯ °æ¿ì Å»Ãâ
+					if (stack.back() == "*" || stack.back() == "/") // *ë‚˜ /ë¥¼ ì œì™¸í•œ ê°’ì„ ë§Œë‚  ê²½ìš° íƒˆì¶œ
 					{
 						post_dummy.push_back(stack.back());
 						stack.pop_back();
@@ -82,24 +81,24 @@ void Simple_calculator::change_infix_to_postfix()
 					}
 				}
 			}
-			stack.push_back(*pos); // ½ºÅÃÀÇ °¡Àå À­ºÎºĞÀÌ ^°¡ ¾Æ´Ï¸é ±×³É ³Ñ¾î°£´Ù.
+			stack.push_back(*pos); // ìŠ¤íƒì˜ ê°€ì¥ ìœ—ë¶€ë¶„ì´ ^ê°€ ì•„ë‹ˆë©´ ê·¸ëƒ¥ ë„˜ì–´ê°„ë‹¤.
 		}
-		// * / ´Â ÀÚ½Å°ú µ¿ÀÏÇÑ * / ¿¬»êÀÚ¸¦ ¸¸³ª¸éÀ» ¸¸³ª¸é, ÀÌÀü °ªÀÇ * / stackÀ» »©°í, º»ÀÎÀÇ °ªÀ» stack¿¡ ³Ö´Â´Ù.¸¸¾à ±× ÀÌ¿ÜÀÇ °ªÀ» ¸¸³µÀ» °æ¿ì¿¡´Â Á¾·áÇÑ´Ù.
+		// * / ëŠ” ìì‹ ê³¼ ë™ì¼í•œ * / ì—°ì‚°ìë¥¼ ë§Œë‚˜ë©´ì„ ë§Œë‚˜ë©´, ì´ì „ ê°’ì˜ * / stackì„ ë¹¼ê³ , ë³¸ì¸ì˜ ê°’ì„ stackì— ë„£ëŠ”ë‹¤.ë§Œì•½ ê·¸ ì´ì™¸ì˜ ê°’ì„ ë§Œë‚¬ì„ ê²½ìš°ì—ëŠ” ì¢…ë£Œí•œë‹¤.
 
-		else if (*pos == "(") { stack.push_back(*pos); } //(ÀÇ ½ÃÀÛ.
+		else if (*pos == "(") { stack.push_back(*pos); } //(ì˜ ì‹œì‘.
 
 
-		else if (*pos == ")") // (¸¦ ¸¸³¯¶§±îÁö °¡Áö°í ÀÖ´Â ¸ğµç °ªÀ» Ãâ·Â½ÃÅ²´Ù.
+		else if (*pos == ")") // (ë¥¼ ë§Œë‚ ë•Œê¹Œì§€ ê°€ì§€ê³  ìˆëŠ” ëª¨ë“  ê°’ì„ ì¶œë ¥ì‹œí‚¨ë‹¤.
 		{
 			post_dummytrans = stack;
 			for (List<string>::const_iterator alpha = post_dummytrans.end(); alpha != post_dummytrans.begin(); alpha--)
 			{
 				if (stack.back() == "(") {
 					stack.pop_back();
-					break; // ½ºÅÃ ³»¿¡¼­ (¸¦ ¸¸³ª¸é ½ºÅÃÀÇ °ªÀ» Áö¿ì°í Å»Ãâ
+					break; // ìŠ¤íƒ ë‚´ì—ì„œ (ë¥¼ ë§Œë‚˜ë©´ ìŠ¤íƒì˜ ê°’ì„ ì§€ìš°ê³  íƒˆì¶œ
 				}
 				else {
-					post_dummy.push_back(stack.back()); //±× ÀÌ¿ÜÀÇ °ªÀº ½ºÅÃÀ» Áö¿ì°í ÀüºÎ Ãâ·Â½ÃÅ²´Ù.
+					post_dummy.push_back(stack.back()); //ê·¸ ì´ì™¸ì˜ ê°’ì€ ìŠ¤íƒì„ ì§€ìš°ê³  ì „ë¶€ ì¶œë ¥ì‹œí‚¨ë‹¤.
 					stack.pop_back();
 				}
 
@@ -113,28 +112,28 @@ void Simple_calculator::change_infix_to_postfix()
 			post_dummy.push_back(*pos);
 			post_dummy.push_back(stack.back());
 			stack.pop_back();
-		} //^ÀÌ´Ù. ^À» ½ºÅÃ¿¡ ÀúÀåÇÏ°í, µÚÀÇ °ªÀ» ¹Ù·Î Ãâ·Â½ÃÅ² µÚ, ^ ¿¬»êÀÚ¸¦ ³Ö´Â´Ù.
+		} //^ì´ë‹¤. ^ì„ ìŠ¤íƒì— ì €ì¥í•˜ê³ , ë’¤ì˜ ê°’ì„ ë°”ë¡œ ì¶œë ¥ì‹œí‚¨ ë’¤, ^ ì—°ì‚°ìë¥¼ ë„£ëŠ”ë‹¤.
 
 		else 
 		{
 			post_dummy.push_back(*pos);
 		}
-		// ¾Æ¹«°Íµµ ¾Æ´Ò °æ¿ì ±×³É ¼ıÀÚ¸¦ Ãâ·Â½ÃÅ²´Ù.
+		// ì•„ë¬´ê²ƒë„ ì•„ë‹ ê²½ìš° ê·¸ëƒ¥ ìˆ«ìë¥¼ ì¶œë ¥ì‹œí‚¨ë‹¤.
 
 
 
-		// Áö¿öµµ µÊ È®ÀÎ¿ë
+		// ì§€ì›Œë„ ë¨ í™•ì¸ìš©
 		/*
-		cout << endl << "Post °ª : " << *pos << endl;
-		cout << "Æ÷½ºÆ® ´õ¹Ì °ª : ";
+		cout << endl << "Post ê°’ : " << *pos << endl;
+		cout << "í¬ìŠ¤íŠ¸ ë”ë¯¸ ê°’ : ";
 		for (List<string>::const_iterator alpha = post_dummy.begin(); alpha != post_dummy.end(); alpha++)
 		{
-			cout << *alpha << " ";// °ª Ãâ·ÂÇÏ°Ô ÇÏ±â
+			cout << *alpha << " ";// ê°’ ì¶œë ¥í•˜ê²Œ í•˜ê¸°
 		}
-		cout << endl << "½ºÅÃ ³»ºÎ¿¡ ³²Àº °ª : ";
+		cout << endl << "ìŠ¤íƒ ë‚´ë¶€ì— ë‚¨ì€ ê°’ : ";
 		for (List<string>::const_iterator alpha = stack.begin(); alpha != stack.end(); alpha++)
 		{
-			cout << *alpha; //½ºÅÃ ³»ºÎ¿¡ ³²Àº °ª È®ÀÎ
+			cout << *alpha; //ìŠ¤íƒ ë‚´ë¶€ì— ë‚¨ì€ ê°’ í™•ì¸
 		}
 		cout << endl << endl;
 		*/
@@ -144,29 +143,29 @@ void Simple_calculator::change_infix_to_postfix()
 	post_dummytrans = stack;
 	for (List<string>::const_iterator alpha = post_dummytrans.end(); alpha != post_dummytrans.begin(); alpha--)
 	{
-			post_dummy.push_back(stack.back()); //½ºÅÃ ³»ºÎ¿¡ ³²Àº °ªÀ» ¸ğµÎ Ãâ·Â½ÃÅ°°í ½ºÅÃÀº ºñ¿î´Ù.
+			post_dummy.push_back(stack.back()); //ìŠ¤íƒ ë‚´ë¶€ì— ë‚¨ì€ ê°’ì„ ëª¨ë‘ ì¶œë ¥ì‹œí‚¤ê³  ìŠ¤íƒì€ ë¹„ìš´ë‹¤.
 			stack.pop_back();
 	}
 
 	m_postfix_expr = post_dummy;
 
 
-	//Áö¿öµµ µÊ È®ÀÎ¿ë 
+	//ì§€ì›Œë„ ë¨ í™•ì¸ìš© 
 	/*
 	for (List<string>::const_iterator alpha = m_postfix_expr.begin(); alpha != m_postfix_expr.end(); alpha++)
 	{
-		cout << *alpha << " ";// °ª Ãâ·ÂÇÏ°Ô ÇÏ±â
+		cout << *alpha << " ";// ê°’ ì¶œë ¥í•˜ê²Œ í•˜ê¸°
 	}
 	cout << endl << m_postfix_expr.size() << endl;
 	cout << endl;
 	*/
 }
 
-// ¹®Á¦ 3
+// ë¬¸ì œ 3
 void Simple_calculator::compute_postfix_expr()
 {
 	List<string> stack;
-	long long Alpha, Beta, Ceta; // Á¤¼öÇü long long ÀÌ»ó
+	long long Alpha, Beta, Ceta; // ì •ìˆ˜í˜• long long ì´ìƒ
 
 	for (List<string>::const_iterator pos = m_postfix_expr.begin(); pos != m_postfix_expr.end(); pos++) 
 	{
@@ -199,7 +198,7 @@ void Simple_calculator::compute_postfix_expr()
 		}
 		else if (*pos == "/")
 		{
-			if ("0" == stack.back()) Ceta = 0;//ºĞ¸ğ°¡ 0ÀÏ °æ¿ì °ªÀÌ ³ª¿ÀÁö ¾Ê±â ¶§¹®¿¡, µû·Î ÁöÁ¤ÇØÁØ´Ù.
+			if ("0" == stack.back()) Ceta = 0;//ë¶„ëª¨ê°€ 0ì¼ ê²½ìš° ê°’ì´ ë‚˜ì˜¤ì§€ ì•Šê¸° ë•Œë¬¸ì—, ë”°ë¡œ ì§€ì •í•´ì¤€ë‹¤.
 			else {
 				Alpha = stoll(stack.back());
 				stack.pop_back();
@@ -209,12 +208,12 @@ void Simple_calculator::compute_postfix_expr()
 			}
 			stack.push_back(to_string(Ceta));
 		}
-		else if (*pos == "^") //°ÅµìÁ¦°ö
+		else if (*pos == "^") //ê±°ë“­ì œê³±
 		{
 			Alpha = stoll(stack.back());
 			stack.pop_back();
 			Beta = stoll(stack.back());
-			stack.pop_back(); // Ceta¸¦ °¡Áö°í ½ÃÀÛÇÏ±â ¶§¹®¿¡ Delta¸¦ 1·Î ¹Ù²ãÁØ´Ù.
+			stack.pop_back(); // Cetaë¥¼ ê°€ì§€ê³  ì‹œì‘í•˜ê¸° ë•Œë¬¸ì— Deltaë¥¼ 1ë¡œ ë°”ê¿”ì¤€ë‹¤.
 			Ceta = Beta;
 			for (int Delta = 1; Delta < Alpha; Delta++ ) Ceta = Beta * Ceta;
 			stack.push_back(to_string(Ceta));
@@ -222,13 +221,13 @@ void Simple_calculator::compute_postfix_expr()
 		else(stack.push_back(*pos));
 
 
-		//È®ÀÎ¿ë Áö¿öµµµÊ
+		//í™•ì¸ìš© ì§€ì›Œë„ë¨
 		/*
-		cout << endl << "Post °ª : " << *pos << endl;
-		cout << "Æ÷½ºÆ® ´õ¹Ì °ª : ";
+		cout << endl << "Post ê°’ : " << *pos << endl;
+		cout << "í¬ìŠ¤íŠ¸ ë”ë¯¸ ê°’ : ";
 		for (List<string>::const_iterator alpha = stack.begin(); alpha != stack.end(); alpha++)
 		{
-			cout << *alpha << " ";// °ª Ãâ·ÂÇÏ°Ô ÇÏ±â
+			cout << *alpha << " ";// ê°’ ì¶œë ¥í•˜ê²Œ í•˜ê¸°
 		}
 		cout << endl;
 		*/
@@ -236,7 +235,7 @@ void Simple_calculator::compute_postfix_expr()
 
 	m_result = stol(stack.back());
 
-	/* °è»ê °á°ú´Â m_result¿¡ ÀúÀåÇÏ¼¼¿ä. */
+	/* ê³„ì‚° ê²°ê³¼ëŠ” m_resultì— ì €ì¥í•˜ì„¸ìš”. */
 
 }
 /* -------------------------------------------------------- */
@@ -254,7 +253,7 @@ Simple_calculator::~Simple_calculator()
 }
 
 
-void Simple_calculator::print_expr(const string& desc, const List<string>& expr)// ¸Ş¸ğÀå¿¡ °ªÀ» Ãâ·Â½ÃÅ²´Ù. Ãâ·Â °¡´É
+void Simple_calculator::print_expr(const string& desc, const List<string>& expr)// ë©”ëª¨ì¥ì— ê°’ì„ ì¶œë ¥ì‹œí‚¨ë‹¤. ì¶œë ¥ ê°€ëŠ¥
 {
 	m_ofs << desc;
 	for (List<string>::const_iterator pos = expr.begin(); pos != expr.end(); pos++)
@@ -282,7 +281,7 @@ void Simple_calculator::print_result()
 }
 
 
-string Simple_calculator::gen_operand() // ¹«ÀÛÀ§ ½Ä »ı¼º
+string Simple_calculator::gen_operand() // ë¬´ì‘ìœ„ ì‹ ìƒì„±
 {
 	int num = (rand() % 37) + 1; 
 
@@ -294,7 +293,7 @@ string Simple_calculator::gen_operand() // ¹«ÀÛÀ§ ½Ä »ı¼º
 }
 
 
-void Simple_calculator::gen_infix_expr(int num_math_operators, bool balance_symbols)// ¹«ÀÛÀ§ ½Ä »ı¼º 
+void Simple_calculator::gen_infix_expr(int num_math_operators, bool balance_symbols)// ë¬´ì‘ìœ„ ì‹ ìƒì„± 
 {
 	int cnt = 0;
 
@@ -310,7 +309,7 @@ void Simple_calculator::gen_infix_expr(int num_math_operators, bool balance_symb
 		else if (operator_id == 2) { math_operator = "*"; }
 		else if (operator_id == 3) { math_operator = "/"; }
 
-		// ÀÌÁø ¿¬»êÀÚ(+, -, *, /)¸¦ Ãß°¡ÇÑ´Ù. 
+		// ì´ì§„ ì—°ì‚°ì(+, -, *, /)ë¥¼ ì¶”ê°€í•œë‹¤. 
 		if (m_infix_expr.empty() == true)
 		{
 			op1 = gen_operand();
@@ -328,7 +327,7 @@ void Simple_calculator::gen_infix_expr(int num_math_operators, bool balance_symb
 			m_infix_expr.push_back(op2);
 		}
 
-		// ^ ´ÜÇ× ÀÌÁø ¿¬»êÀÚ¸¦ Ãß°¡ÇÑ´Ù.
+		// ^ ë‹¨í•­ ì´ì§„ ì—°ì‚°ìë¥¼ ì¶”ê°€í•œë‹¤.
 		if (rand() % 5 == 0)
 		{
 			m_infix_expr.pop_back();
